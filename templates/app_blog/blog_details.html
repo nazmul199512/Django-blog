@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block titleblock %} Read Blog {% endblock titleblock %}
+
+{% block bodyblock %}
+    <div class="row">
+        <div class="col-sm-5">
+            <h3 style="color:#0f6191">{{blog.blog_title}}</h3>
+            <h6 style="color:#02bf0b">@{{blog.author}}</h6><br>
+            <i>published on {{blog.publish_date}}</i><br>
+            <i>updated on {{blog.update_date}}</i>
+            <h6 style="color:#0f6191">{{blog.liked_blog.count}} Likes || {{blog.blog_comments.count}} Comments</h6>
+            
+        </div>
+        <div class="col-sm-5">
+        <img src="/media/{{blog.blog_image}}" alt="{{blog.blog_title}}" title="{{blog.blog_title}}" width="100%">
+        </div>
+        <div class='col-sm-1'></div>
+        <div class="col-sm-10">
+        <br><p>{{blog.blog_content|linebreaks}}</p>
+        </div>
+        <div class='col-sm-1'></div>
+        
+    </div>
+    <hr>
+    {% if liked %}
+    <a href="{% url 'app_blog:unliked' pk=blog.pk %}">
+        <h4 style="color:#0f6191"><i class="fa fa-thumbs-o-down fa" aria-hidden="true"> Unlike</i></h4>
+    </a>
+    {% else %}
+    <a href="{% url 'app_blog:liked' pk=blog.pk %}">
+        <h4 style="color:#0f6191"><i class="fa fa-thumbs-o-up fa" aria-hidden="true"> Like</i></h4>
+    </a>
+    {% endif %}
+    <br>
+    <br>
+    <div class="row">
+        
+        <div class="col-sm-7">
+        <hr>
+        <hr>
+            <h3 style="color:#946300">Comments</h3>
+            {% for comment in blog.blog_comments.all %}
+            <a href="#">@{{comment.user}}</a> <i>__{{comment.comment_date}}</i><br>
+            <p>{{comment.comment}}</p>
+            {% endfor %}
+            <br>
+            
+        </div>
+        
+        <div class="col-sm-5">
+            <hr>
+            <hr>
+            <form method="POST">
+                {{comment_form|crispy}}
+                {% csrf_token %}
+                <button class="btn btn-primary btn-sm">comment</button>
+                <br><br>
+            </form>
+
+        </div>
+    </div>
+    <hr>
+
+{% endblock bodyblock %}

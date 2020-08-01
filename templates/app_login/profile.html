@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block titleblock %} Profile {% endblock titleblock %}
+
+{% block bodyblock %}
+<h3>Your Profile</h3><br>
+{% if user.user_profile%}
+<img src="/media/{{user.user_profile.profile_pic}}" class='rounded-circle' height='100px' width='110px'>
+<br><br>
+<a href="{% url 'app_login:change_pro_pic'%}" class='btn btn-info btn-sm'>Change Image</a>
+<br><hr>
+{% else %}
+<img src="/media/profile_pics/demo.png" class='rounded-circle' height='150px' width='170px'><br><br>
+<a href="{% url 'app_login:add_pro_pic'%}" class='btn btn-info btn-sm'>Add Profile Pic</a>
+<br><hr>
+{% endif %}
+<p>Username: {{user.username}}</p>
+<p>Email: {{user.email}}</p>
+<p>Name: {{user.first_name}} {{user.last_name}}</p>
+<br>
+<a href="{% url 'app_login:edit_profile'%}" class="btn btn-warning btn-sm">Update Profile</a>
+{% endblock bodyblock %}
